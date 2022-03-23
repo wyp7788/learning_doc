@@ -42,7 +42,18 @@ main: main.o stack.o maze.o
 
 ## 2. Linux常用命令
 
-### 2.1 文件操作
+```shell
+find  . #查看当前目录下面所有文件
+tree . #查看当前目录文件树
+find . -name "*.c"  #查看当前目录下所有 .c文件
+find . -name "*.c" -o -name "*.h" #查看当前目录下.c 或者是.h文件
+```
+
+
+
+### 2.1 vim 操作
+
+![](/home/ypwang/learning_doc/image/Screenshot from 2022-03-14 08-38-33.png)
 
 ### 2.2 进程
 
