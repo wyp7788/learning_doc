@@ -1,4 +1,4 @@
-# FPGA Lab 2: 
+# FPGA Lab 2: 加法器设计
 
 ## A Structural and Behavioral Adder Design
 
