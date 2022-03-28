@@ -1,3 +1,7 @@
+# Gray code
+
+格雷码又称循环码，；
+
 ```VERILOG
 module binary_to_gray #(
     parameter PTR = 8
