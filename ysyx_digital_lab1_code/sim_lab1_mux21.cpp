@@ -35,7 +35,7 @@ void sim_exit(){
 
 int main() {
   sim_init();
-
+  /*    2 to 1
   top->s=0; top->a=0; top->b=0;  step_and_dump_wave();   // 将s，a和b均初始化为“0”
                       top->b=1;  step_and_dump_wave();   // 将b改为“1”，s和a的值不变，继续保持“0”，
             top->a=1; top->b=0;  step_and_dump_wave();   // 将a，b分别改为“1”和“0”，s的值不变，
@@ -44,6 +44,16 @@ int main() {
                       top->b=1;  step_and_dump_wave();
             top->a=1; top->b=0;  step_and_dump_wave();
                       top->b=1;  step_and_dump_wave();
+  */ // 4 to 1
+  top->s=0b00;  top->a=0b1110;  step_and_dump_wave();
+                top->a=0b0001;  step_and_dump_wave();
+  top->s=0b01;  top->a=0b1110;  step_and_dump_wave();
+                top->a=0b0010;  step_and_dump_wave();
+  top->s=0b10;  top->a=0b1010;  step_and_dump_wave();
+                top->a=0b0100;  step_and_dump_wave();
+  top->s=0b11;  top->a=0b0111;  step_and_dump_wave();
+                top->a=0b1001;  step_and_dump_wave();
+
 
   sim_exit();
 }
