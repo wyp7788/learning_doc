@@ -132,9 +132,15 @@ main: main.o stack.o maze.o
 
 ### 2. Linux常用命令
 
+- 文件管理 - `cd`, `pwd`, `mkdir`, `rmdir`, `ls`, `cp`, `rm`, `mv`, `tar`
+- 文件检索 - `cat`, `more`, `less`, `head`, `tail`, `file`, `find`
+- 输入输出控制 - 重定向, 管道, `tee`, `xargs`
+- 文本处理 - `vim`, `grep`, `awk`, `sed`, `sort`, `wc`, `uniq`, `cut`, `tr`
+- 正则表达式
+- 系统监控 - `jobs`, `ps`, `top`, `kill`, `free`, `dmesg`, `lsof`
+
 ```shell
 find  . # 查看当前目录下面所有文件
-tree . # 查看当前目录文件树
 find . -name "*.c"  # 查看当前目录下所有 .c文件
 find . -name "*.c" -o -name "*.h" # 查看当前目录下.c 或者是.h文件 -o: or
 find . -name "*.c" -o -name "*.h" | xargs cat   # 管道，将find的结果送入管道作为xargs 的输入
@@ -142,6 +148,18 @@ find . -name "*.c" -o -name "*.h" | xargs cat   # 管道，将find的结果送�
 vim . # 在终端打开当前目录下所有文件
 lscpu # 查看cpu信息
 ```
+
+- `tree` 名令
+
+```shell
+# tree - list contents of directories in a tree-like format
+tree -a  #All files are printed.By default tree does  not  print  hidden files
+tree -d  #List directories only.
+tree -f  #Prints the full path prefix for each file
+tree -C  #Useful to colorize output to a pipe.
+```
+
+
 
 #### 2.1 vim 操作
 

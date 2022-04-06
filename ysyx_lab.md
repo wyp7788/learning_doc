@@ -1,16 +1,215 @@
 # ysyx lab report
 
-2022.03.04
+2022.03.04  实验平台：Ubuntu 20.04 LTS
 
-## 1. 数字电路基础实验
+## Verilator&数字电路基础实验
 
-- 信息的二进制编码
-- 组合逻辑设计：多路选择器、译码器、优先编码器、加法器、比较器
-- 时序逻辑设计：时钟、D触发器、计数器、SRAM和DRAM、有限状态机、时序分析
+### verilator 安装结果：
 
-接入NVboard，进行仿真
+<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-06 22-05-44.png" alt="Screenshot from 2022-04-06 22-05-44" style="zoom:50%;" />
 
-计数器和时钟、寄存器和存储器（通过IP核实现存储器）
+### 数字电路基础实验
 
-这部分可以通过使用zynq z1板子实现
+
+
+#### Lab1 数据选择器
+
+
+
+#### Lab2 译码器和编码器
+
+#### Lab 3 加法器与ALU
+
+#### Lab 4 计数器和时钟（zynq 7020 实现）
+
+#### Lab 5 寄存器组及存储器（zynq 7020 实现）
+
+#### Lab 6 移位寄存器及桶形移位器
+
+#### Lab 7 状态机及键盘输入
+
+#### Lab 8 VGA接口控制器实现
+
+#### Lab 9 字符输入界面
+
+
+
+## PA0 开发环境配置
+
+完成了PA0的所有内容。
+
+编译nemu时遇到bug，查看出错信息之后发现是缺少bison，执行安装命令之后，完成正常编译，出现welcome界面。
+
+**大插曲：** 刚开始做PA时，有个红色的**重要性超越实验的原则与方法**说要针对自己的Ubuntu版本选择对应的源，对这个不太了解，就没有做任何改变，一通安装相应的工具，`make menuconfig`的时候仍然能正常进入welcome界面，但是做到PA1开头测试键盘的时候，一直segmentation fault错误，看了jyy的PA习题课之后知道了如何调试这个bug，可是尝试了众多方法后无果，在群里讨论的时候有个喵喵酱的小伙伴说是不是没有更换源，我瞬间想到了自己忽略的红色提醒！换源之后，更新了一下包，这个时候才正常测试键盘，可以运行马里奥小游戏了！重要细节一定需要认真对待！
+
+### 反思总结
+
+官方手册和官方Tutorial最为可靠。
+
+反思：每做完一小步，一定要测试是否做的正确！增量式开发！螺旋式的学习，不断的回过头去看之前做过的东西会有新的收获，并且能够优化前期不足的地方！
+
+
+
+## PA1 开天辟地的篇章
+
+### 计算机可以没有寄存器吗?
+
+
+
+计算机没有寄存器仍然可以工作。
+
+**编程模型：**
+
+计算机执行指令直接对存储器进行读写，完成寄存器需要完成的工作，但指令的读写会变得很慢；程序在编译、链接之后生成可执行文件就是一条条的指令，没有寄存器计算机执行程序的速度会变得很慢。
+
+
+
+### 尝试理解计算机如何计算
+
+计算机最擅长的就是做重复的运算；`1+2+...+100` 的计算过程就是个重复执行加法运算的过程，每一次运算首先读取寄存器里面的值进行计算，计算结束把结果存到寄存器里面，不停的重复这些动作，直到完成最终计算。
+
+
+
+### 从状态机视角理解程序运行： 继续画出状态机
+
+三元组（`PC`, `r1`, `r2`）
+
+```shell
+( 0, x, x) -> ( 1, 0, x) -> ( 2, 0, 0) -> ( 3, 0, 1)->
+( 4, 1, 2) -> ( 5, 3, 3) ... ->
+( 101, 4950, 99) ->( 102, 5050, 100)
+```
+
+
+
+
+
+### kconfig生成的宏与条件编译：宏是如何工作的？
+
+宏在使用的位置将其替换，替换的过程发生在预编译。
+
+
+
+### 为什么全部都是函数?
+
+函数对外提供接口，只需要知道函数具备的功能和API，使用方便；模块化设计方便维护和多人协同开发。
+
+
+
+### 参数的处理过程：参数是从哪里来的？
+
+参数从命令行读入；
+
+### 究竟需要执行多久？
+
+`static void execute(uint64_t n)`函数是无符号整形变量，传入参数为`-1`时，转换为无符号数是该数据位下能表示的最大的数字，程序会执行的`-1`转化为无符号数字大小的次数！
+
+**调用`cpu_exec()`的时候传入了参数`-1`", 这一做法属于未定义行为吗?** 待日后查阅C99
+
+
+
+### 优美的退出
+
+`cmd_q()`函数在被调用的时候，返回-1; 每次退出的时候出现error都是因为调用了excute（n）有关
+
+![Screenshot from 2022-04-06 21-26-42](/home/ypwang/learning_doc/image/Screenshot from 2022-04-06 21-26-42.png)
+
+解决之后的效果为：
+
+![Screenshot from 2022-04-06 20-55-26](/home/ypwang/learning_doc/image/Screenshot from 2022-04-06 20-55-26.png)
+
+
+
+
+
+## PA 1.1 简易调试器
+
+### 单步执行
+
+当nemu运行之后，键入`si [N]`命令让程序单步执行`N`条指令后暂停执行，当命令为`si`时，单步执行，因此只需要实现`sdb.c`中的`si[N]`命令
+
+```c
+static int cmd_si(char *args){
+  int step;
+  if(args ==NULL) step = 1;
+  else sscanf(args, "%d", &step);
+  cpu_exec(step);                 // n steps
+  return 0;
+}
+```
+
+实现效果为
+
+![Screenshot from 2022-04-06 21-16-21](/home/ypwang/learning_doc/image/Screenshot from 2022-04-06 21-16-21.png)
+
+
+
+### 打印寄存器
+
+打印寄存器需要输入的命令为`info r` ,sdb.c中需要实现info r命令
+
+```c
+static int cmd_info(char *args){
+  if(args[0] == 'r') { isa_reg_display();}   
+  if(args[0] == 'w') { ;}    
+  return 0;
+}
+
+//isa_reg_display();的实现为：
+void isa_reg_display() { 
+  int i;
+	for(i=0; i< ARRLEN(regs); i++){   //ARRLEN(regs)为计算reg length的宏
+		printf("No. %d register: %s\tx%08lx\n", i, regs[i], cpu.gpr[i]);
+	}  
+    printf("No. PC register: PC\t %08lx\n", cpu.pc);    
+}
+```
+
+note: w为待实现的监视点命令
+
+打印结果为：
+
+ <img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-06 20-32-15.png" alt="Screenshot from 2022-04-06 20-32-15" style="zoom:33%;" />
+
+
+
+### 扫描内存
+
+扫描内存则需要实现sdb中的`x N EXPR`命令，由于还未完成表达式求值，故使用`x 10 0x80000000`作为输入命令
+
+sdb.c `cmd_x`实现如下:
+
+```c
+static int cmd_x(char *args){
+  
+  if(args == NULL){
+    printf("Wrong Command!\n");
+    return 0;
+  }
+  int num;
+  long unsigned int exprs;
+  sscanf(args, "%d %lx", &num, &exprs);
+  int i;
+  for(i = 0; i < num; i++){
+    printf("0x %lx  0x %lx\n", exprs + i*32, paddr_read(exprs + i*32, 32));
+  }
+  return 0;
+}
+```
+
+扫描内存结果：
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
