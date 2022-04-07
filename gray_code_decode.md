@@ -53,3 +53,23 @@ endgenerate
 endmodule
 ```
 
+```mermaid
+graph TD  
+A --> B
+
+```
+
+
+
+```mermaid
+graph TD
+A --> B[end1]
+C(s) --> D(c)
+A[begin] --> E[end2]
+```
+
+
+
+```flow
+```
+
