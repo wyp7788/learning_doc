@@ -2,11 +2,22 @@
 
 2022.03.04  实验平台：Ubuntu 20.04 LTS
 
+**note：虽然把数字电路实验排版在了前面，但其实我是先做的PA，后做的数字电路基础实验。**
+
 ## Verilator&数字电路基础实验
 
 ### verilator 安装结果：
 
 <img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-06 22-05-44.png" alt="Screenshot from 2022-04-06 22-05-44" style="zoom:50%;" />
+
+流水灯verilator仿真代码：
+
+```C++
+#include<verilated>
+
+```
+
+
 
 ### 数字电路基础实验
 
@@ -175,7 +186,9 @@ note: w为待实现的监视点命令
 
 ### 扫描内存
 
-扫描内存则需要实现sdb中的`x N EXPR`命令，由于还未完成表达式求值，故使用`x 10 0x80000000`作为输入命令
+**扫描客户计算机的内存数据**
+
+扫描内存则需要实现sdb中的`x N EXPR`命令，由于还未完成表达式求值，故使用`x 10 0x80 00 0000`（32-bit地址）作为输入命令
 
 sdb.c `cmd_x`实现如下:
 
@@ -183,15 +196,16 @@ sdb.c `cmd_x`实现如下:
 static int cmd_x(char *args){
   
   if(args == NULL){
-    printf("Wrong Command!\n");
+    printf("Wrong Command! Please try again!\n");
     return 0;
   }
   int num;
-  long unsigned int exprs;
-  sscanf(args, "%d %lx", &num, &exprs);
+  long unsigned int init_addr;
+  sscanf(args, "%d %lx", &num, &init_addr);
   int i;
   for(i = 0; i < num; i++){
-    printf("0x %lx  0x %lx\n", exprs + i*32, paddr_read(exprs + i*32, 32));
+    printf("Memory address:0x%lx\tData: 0x%lx\n", init_addr, vaddr_read(init_addr, 8));
+    init_addr += 8; //  64-bit machine 8*8 Byte = 64-bit
   }
   return 0;
 }
@@ -199,9 +213,11 @@ static int cmd_x(char *args){
 
 扫描内存结果：
 
+<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-08 23-29-28.png" alt="Screenshot from 2022-04-08 23-29-28" style="zoom:50%;" />
 
 
 
+**PA1.1完成**
 
 
 

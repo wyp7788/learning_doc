@@ -96,6 +96,29 @@ inline 关键字告诉编辑器，这个函数的调用要尽可能快，可以�
 
 ## 2. C语言深入理解
 
+### 2.1 strtok()函数
+
+The C library function **char \*strtok(char \*str, const char \*delim)** breaks string **str** into a series of tokens using the delimiter **delim**.
+
+Following is the declaration for strtok() function.
+
+```c
+char *strtok(char *str, const char *delim)
+```
+
+**Parameters**
+
+- **str** − The contents of this string are modified and broken into smaller strings (tokens).
+- **delim** − This is the C string containing the delimiters. These may vary from one call to another.
+
+**Return** **Value**
+
+This function returns a pointer to the first token found in the string. A null pointer is returned if there are no tokens left to retrieve.
+
+### 2.2 sscanf()函数
+
+
+
 ## 3. Linux C编程
 
 ## 附录 

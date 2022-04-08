@@ -25,7 +25,7 @@ verilator -Wall --cc --exe --build sim_main.cpp our.v
 
 ### 1. RTL 设计
 
-以流水灯为例, Verilog代码如下：`light.v`
+以流水灯为例, Verilog代码如下：`light.v` 
 
 ```verilog
 module light(
@@ -60,7 +60,7 @@ verilator --cc light.v
 
 ```shell
 ls -l obj_dir/
-#
+# 生成的文件
 total 44
 -rw-rw-r-- 1  Vlight___024root.cpp
 -rw-rw-r-- 1  Vlight___024root.h
@@ -73,6 +73,47 @@ total 44
 -rw-rw-r-- 1  Vlight__Syms.h
 -rw-rw-r-- 1  Vlight__ver.d
 -rw-rw-r-- 1  Vlight__verFiles.dat
+```
+
+- `Vlight.h ` Include model header, generated from Verilating "RTL.v"
+- `Vlight.cpp`提供仿真的信号接口；
+- `Vlight.mk`与`make`一起使用构建可执行仿真文件；
+
+
+
+### 3. Write testbench for your RTL design
+
+Verilator的`testbench`使用C++编写，假设前期的RTL代码为`RTL.v`基本过程为：
+
+（1）头文件包含：
+
+```C++
+// Include common routines
+#include <verilated.h>   
+
+// Include model header, generated from Verilating "RTL.v"
+#include "Vtop.h"
+```
+
+（2）主函数
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 附录
+
+```C++
+ // Prevent unused variable warnings 
+ if (false && argc && argv && env) {}
 ```
 
 

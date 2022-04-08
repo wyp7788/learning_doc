@@ -62,3 +62,218 @@ pmem = malloc(CONFIG_MSIZE);  //CONFIG_MSIZE = 0x8000000 = 2^27Byte 128MB
 6. Monitor的初始化工作结束后, `main()`函数会继续调用`engine_start()`函数 (在`nemu/src/engine/interpreter/init.c`中定义). 代码会进入简易调试器(Simple Debugger)的主循环`sdb_mainloop()` (在`nemu/src/monitor/sdb/sdb.c`中定义), 并输出NEMU的命令提示符:
 
 7. 在命令提示符后键入`c`后, NEMU开始进入指令执行的主循环`cpu_exec()` (在`nemu/src/cpu/cpu-exec.c`中定义). `cpu_exec()`又会调用`execute()`, 后者模拟了CPU的工作方式: 不断执行指令. 具体地, 代码将在一个for循环中不断调用`exec_once()`函数, 这个函数的功能就是我们在上一小节中介绍的内容: 让CPU执行当前PC指向的一条指令, 然后更新PC.
+
+
+
+```shell
+.
+├── abstract-machine
+│   ├── am
+│   │   ├── build
+│   │   │   └── native
+│   │   │       └── src
+│   │   │           └── native
+│   │   │               └── ioe
+│   │   ├── include
+│   │   │   └── arch
+│   │   └── src
+│   │       ├── mips
+│   │       │   └── nemu
+│   │       ├── native
+│   │       │   └── ioe
+│   │       ├── platform
+│   │       │   ├── dummy
+│   │       │   └── nemu
+│   │       │       ├── include
+│   │       │       └── ioe
+│   │       ├── riscv
+│   │       │   ├── nemu
+│   │       │   ├── npc
+│   │       │   └── spike
+│   │       └── x86
+│   │           ├── nemu
+│   │           └── qemu
+│   │               └── boot
+│   ├── klib
+│   │   ├── build
+│   │   │   └── native
+│   │   │       └── src
+│   │   ├── include
+│   │   └── src
+│   └── scripts
+│       ├── isa
+│       └── platform
+├── am-kernels
+│   ├── benchmarks
+│   │   ├── coremark
+│   │   │   ├── include
+│   │   │   └── src
+│   │   ├── dhrystone
+│   │   └── microbench
+│   │       ├── include
+│   │       └── src
+│   │           ├── 15pz
+│   │           ├── bf
+│   │           ├── dinic
+│   │           ├── fib
+│   │           ├── lzip
+│   │           ├── md5
+│   │           ├── qsort
+│   │           ├── queen
+│   │           ├── sieve
+│   │           └── ssort
+│   ├── kernels
+│   │   ├── hello
+│   │   ├── litenes
+│   │   │   └── src
+│   │   ├── nemu
+│   │   ├── slider
+│   │   │   └── images
+│   │   ├── thread-os
+│   │   └── typing-game
+│   └── tests
+│       ├── am-tests
+│       │   ├── build
+│       │   │   └── native
+│       │   │       └── src
+│       │   │           └── tests
+│       │   │               └── audio
+│       │   ├── include
+│       │   └── src
+│       │       └── tests
+│       │           └── audio
+│       └── cpu-tests
+│           ├── include
+│           └── tests
+├── fceux-am
+│   ├── build
+│   │   └── native
+│   │       ├── nes
+│   │       │   └── gen
+│   │       └── src
+│   │           ├── boards
+│   │           ├── drivers
+│   │           │   ├── common
+│   │           │   └── sdl
+│   │           └── utils
+│   ├── nes
+│   │   ├── gen
+│   │   └── rom
+│   └── src
+│       ├── boards
+│       ├── drivers
+│       │   ├── common
+│       │   └── sdl
+│       ├── fir
+│       ├── palettes
+│       └── utils
+├── nemu
+│   ├── build
+│   │   └── obj-riscv64-nemu-interpreter
+│   │       └── src
+│   │           ├── cpu
+│   │           │   └── difftest
+│   │           ├── device
+│   │           │   └── io
+│   │           ├── engine
+│   │           │   └── interpreter
+│   │           ├── isa
+│   │           │   └── riscv64
+│   │           │       ├── difftest
+│   │           │       └── system
+│   │           ├── memory
+│   │           ├── monitor
+│   │           │   └── sdb
+│   │           └── utils
+│   ├── configs
+│   ├── include
+│   │   ├── config
+│   │   │   ├── cc
+│   │   │   ├── difftest
+│   │   │   │   └── ref
+│   │   │   ├── engine
+│   │   │   ├── isa
+│   │   │   ├── itrace
+│   │   │   ├── mem
+│   │   │   ├── mode
+│   │   │   ├── pc
+│   │   │   │   └── reset
+│   │   │   ├── pmem
+│   │   │   ├── rt
+│   │   │   ├── target
+│   │   │   │   └── native
+│   │   │   ├── timer
+│   │   │   └── trace
+│   │   ├── cpu
+│   │   ├── device
+│   │   ├── generated
+│   │   └── memory
+│   ├── resource
+│   │   ├── debian
+│   │   ├── mips-elf
+│   │   └── sdcard
+│   ├── scripts
+│   ├── src
+│   │   ├── cpu
+│   │   │   └── difftest
+│   │   ├── device
+│   │   │   └── io
+│   │   ├── engine
+│   │   │   └── interpreter
+│   │   ├── isa
+│   │   │   ├── riscv32
+│   │   │   │   ├── difftest
+│   │   │   │   ├── include
+│   │   │   │   ├── local-include
+│   │   │   │   └── system
+│   │   │   └── riscv64
+│   │   │       ├── difftest
+│   │   │       ├── include
+│   │   │       ├── local-include
+│   │   │       └── system
+│   │   ├── memory
+│   │   ├── monitor
+│   │   │   └── sdb
+│   │   └── utils
+│   └── tools
+│       ├── fixdep
+│       │   └── build
+│       │       └── obj-fixdep
+│       ├── gen-expr
+│       ├── kconfig
+│       │   ├── build
+│       │   │   ├── obj-conf
+│       │   │   │   └── build
+│       │   │   └── obj-mconf
+│       │   │       ├── build
+│       │   │       └── lxdialog
+│       │   └── lxdialog
+│       ├── kvm-diff
+│       │   ├── include
+│       │   └── src
+│       ├── qemu-diff
+│       │   ├── include
+│       │   └── src
+│       └── spike-diff
+├── npc
+│   ├── csrc
+│   └── vsrc
+└── nvboard
+    ├── board
+    ├── build
+    ├── example
+    │   ├── build
+    │   │   └── obj_dir
+    │   ├── constr
+    │   ├── csrc
+    │   ├── resource
+    │   └── vsrc
+    ├── include
+    ├── pic
+    ├── scripts
+    └── src
+
+205 directories
+
+```
+
