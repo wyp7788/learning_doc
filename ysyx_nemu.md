@@ -65,215 +65,109 @@ pmem = malloc(CONFIG_MSIZE);  //CONFIG_MSIZE = 0x8000000 = 2^27Byte 128MB
 
 
 
-```shell
-.
-├── abstract-machine
-│   ├── am
-│   │   ├── build
-│   │   │   └── native
-│   │   │       └── src
-│   │   │           └── native
-│   │   │               └── ioe
-│   │   ├── include
-│   │   │   └── arch
-│   │   └── src
-│   │       ├── mips
-│   │       │   └── nemu
-│   │       ├── native
-│   │       │   └── ioe
-│   │       ├── platform
-│   │       │   ├── dummy
-│   │       │   └── nemu
-│   │       │       ├── include
-│   │       │       └── ioe
-│   │       ├── riscv
-│   │       │   ├── nemu
-│   │       │   ├── npc
-│   │       │   └── spike
-│   │       └── x86
-│   │           ├── nemu
-│   │           └── qemu
-│   │               └── boot
-│   ├── klib
-│   │   ├── build
-│   │   │   └── native
-│   │   │       └── src
-│   │   ├── include
-│   │   └── src
-│   └── scripts
-│       ├── isa
-│       └── platform
-├── am-kernels
-│   ├── benchmarks
-│   │   ├── coremark
-│   │   │   ├── include
-│   │   │   └── src
-│   │   ├── dhrystone
-│   │   └── microbench
-│   │       ├── include
-│   │       └── src
-│   │           ├── 15pz
-│   │           ├── bf
-│   │           ├── dinic
-│   │           ├── fib
-│   │           ├── lzip
-│   │           ├── md5
-│   │           ├── qsort
-│   │           ├── queen
-│   │           ├── sieve
-│   │           └── ssort
-│   ├── kernels
-│   │   ├── hello
-│   │   ├── litenes
-│   │   │   └── src
-│   │   ├── nemu
-│   │   ├── slider
-│   │   │   └── images
-│   │   ├── thread-os
-│   │   └── typing-game
-│   └── tests
-│       ├── am-tests
-│       │   ├── build
-│       │   │   └── native
-│       │   │       └── src
-│       │   │           └── tests
-│       │   │               └── audio
-│       │   ├── include
-│       │   └── src
-│       │       └── tests
-│       │           └── audio
-│       └── cpu-tests
-│           ├── include
-│           └── tests
-├── fceux-am
-│   ├── build
-│   │   └── native
-│   │       ├── nes
-│   │       │   └── gen
-│   │       └── src
-│   │           ├── boards
-│   │           ├── drivers
-│   │           │   ├── common
-│   │           │   └── sdl
-│   │           └── utils
-│   ├── nes
-│   │   ├── gen
-│   │   └── rom
-│   └── src
-│       ├── boards
-│       ├── drivers
-│       │   ├── common
-│       │   └── sdl
-│       ├── fir
-│       ├── palettes
-│       └── utils
-├── nemu
-│   ├── build
-│   │   └── obj-riscv64-nemu-interpreter
-│   │       └── src
-│   │           ├── cpu
-│   │           │   └── difftest
-│   │           ├── device
-│   │           │   └── io
-│   │           ├── engine
-│   │           │   └── interpreter
-│   │           ├── isa
-│   │           │   └── riscv64
-│   │           │       ├── difftest
-│   │           │       └── system
-│   │           ├── memory
-│   │           ├── monitor
-│   │           │   └── sdb
-│   │           └── utils
-│   ├── configs
-│   ├── include
-│   │   ├── config
-│   │   │   ├── cc
-│   │   │   ├── difftest
-│   │   │   │   └── ref
-│   │   │   ├── engine
-│   │   │   ├── isa
-│   │   │   ├── itrace
-│   │   │   ├── mem
-│   │   │   ├── mode
-│   │   │   ├── pc
-│   │   │   │   └── reset
-│   │   │   ├── pmem
-│   │   │   ├── rt
-│   │   │   ├── target
-│   │   │   │   └── native
-│   │   │   ├── timer
-│   │   │   └── trace
-│   │   ├── cpu
-│   │   ├── device
-│   │   ├── generated
-│   │   └── memory
-│   ├── resource
-│   │   ├── debian
-│   │   ├── mips-elf
-│   │   └── sdcard
-│   ├── scripts
-│   ├── src
-│   │   ├── cpu
-│   │   │   └── difftest
-│   │   ├── device
-│   │   │   └── io
-│   │   ├── engine
-│   │   │   └── interpreter
-│   │   ├── isa
-│   │   │   ├── riscv32
-│   │   │   │   ├── difftest
-│   │   │   │   ├── include
-│   │   │   │   ├── local-include
-│   │   │   │   └── system
-│   │   │   └── riscv64
-│   │   │       ├── difftest
-│   │   │       ├── include
-│   │   │       ├── local-include
-│   │   │       └── system
-│   │   ├── memory
-│   │   ├── monitor
-│   │   │   └── sdb
-│   │   └── utils
-│   └── tools
-│       ├── fixdep
-│       │   └── build
-│       │       └── obj-fixdep
-│       ├── gen-expr
-│       ├── kconfig
-│       │   ├── build
-│       │   │   ├── obj-conf
-│       │   │   │   └── build
-│       │   │   └── obj-mconf
-│       │   │       ├── build
-│       │   │       └── lxdialog
-│       │   └── lxdialog
-│       ├── kvm-diff
-│       │   ├── include
-│       │   └── src
-│       ├── qemu-diff
-│       │   ├── include
-│       │   └── src
-│       └── spike-diff
-├── npc
-│   ├── csrc
-│   └── vsrc
-└── nvboard
-    ├── board
-    ├── build
-    ├── example
-    │   ├── build
-    │   │   └── obj_dir
-    │   ├── constr
-    │   ├── csrc
-    │   ├── resource
-    │   └── vsrc
-    ├── include
-    ├── pic
-    ├── scripts
-    └── src
+## 附录
 
-205 directories
 
+
+### ISA相关的API
+
+**全局类型**
+
+```c
+word_t; // 表示与ISA字长等长的无符号类型，RISC-V 64-bit 的ISA中为uint64_t
+sword_t; //表示与ISA字长等长的有符号类型，RISC-V 64-bit 的ISA中为int64_t
+char *FMT_WORD; //word_t对应的十六进制格式化说明符，32-bit ISA 为 "0x%08x". 64-bit ISA 中为 "0x%016lx"
 ```
 
+**Monitor相关**
+
+```c
+char isa_logo; //用于在未实现指令的报错信息中提示开发者阅读相关的文档手册
+word_t RESET_VECTOR; //表示PC寄存器初始值
+void init_isa(); //在monitor初始化时调用，进行ISA相关的初始化工作；设置必要的寄存器初始值，如PC；加载内置客户程序
+```
+
+**寄存器相关**
+
+```c
+struct{
+    // ...
+    
+    word_t pc;
+    
+}CPU_state; //寄存器结构的类型定义，其中必须包含一个PC成员
+
+CPU_state cpu; //寄存器结构的全局定义
+
+void isa_reg_display(); //用于打印寄存器当前的值
+
+word_t isa_reg_str2val(const char *name, bool *success); //若存在名称为name的寄存器，返回其当前值，并设置success为true，否则success为false
+```
+
+**执行命令相关**
+
+```c
+struct { //用于存放ISA相关的译码信息，会嵌入在译码信息结构体Decode中
+    // ... 
+}ISADecodeInfo;
+
+int isa_exec_once(Decode *s);//取出 s->pc 指向的指令并译码执行，同时更新 s-> snpc
+```
+
+**虚拟内存相关**
+
+```c
+int isa_mmu_check(vaddr_t vaddr, int len, int type);
+```
+
+检查当前系统状态下对内存区间`[vaddr, vaddr + len]`, 类型为`type`的访问是否需要经过地址转换。其中`type`的类型可能为：
+
+- `MEM_TYPE_LIETCH`：取指令
+- `MEM_TYPE_READ`：读数据
+- `MEM_TYPE_WRITE`：写数据
+
+函数的返回值可能为：
+
+- `MMU_DIRECT`：该内存访问可以在物理内存上直接进行
+- `MMU_TEANSLATE`：该内存访问需要经过机制转换
+- `MMU_FAIL`：该内存访问失败，需要抛出异常（如RISC架构不支持非对齐的内存访问）
+
+```C
+paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type);
+```
+
+对内存区间为`[vaddr, vaddr + len ]`, 类型为`type`的内存访问进行地址转换，函数返回值可能为：
+
+- `pg_paddr` | `MEM_RET_OK`: 地址转换成功, 其中`pg_paddr`为物理页面的地址(而不是`vaddr`翻译后的物理地址)
+- `MEM_RET_FAIL`: 地址转换失败, 原因包括权限检查失败等不可恢复的原因, 一般需要抛出异常
+- `MEM_RET_CROSS_PAGE`: 地址转换失败, 原因为访存请求跨越了页面的边界
+
+**中断异常相关**
+
+```c
+vaddr_t isa_raise_intr(word_t NO, vaddr_t epc);
+```
+
+抛出一个号码为`NO`的异常, 其中`epc`为触发异常的指令PC, 返回异常处理的出口地址.
+
+------
+
+```c
+word_t isa_query_intr();
+```
+
+查询当前是否有未处理的中断, 若有则返回中断号码, 否则返回`INTR_EMPTY`.
+
+**DiffTest相关**
+
+```c
+bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc);
+```
+
+检查当前的寄存器状态是否与`ref_r` 相同，`pc`为`cpu.pc`的上一条动态指令的PC，即`cpu.pc`的旧值. 如果状态相同，则返回`true`，否则返回`false` .
+
+```c
+void isa_difftest_attach(); 
+```
+
+将当前所有状态同步到REF，并在之后的执行中开启`DiffTest`.

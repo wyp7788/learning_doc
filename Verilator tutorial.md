@@ -99,6 +99,10 @@ Verilator的`testbench`使用C++编写，假设前期的RTL代码为`RTL.v`基�
 
 
 
+`verilator -Wall --trace -cc alu.sv --exe tb_alu.cpp`
+
+
+
 
 
 

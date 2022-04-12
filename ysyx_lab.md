@@ -10,7 +10,55 @@
 
 <img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-06 22-05-44.png" alt="Screenshot from 2022-04-06 22-05-44" style="zoom:50%;" />
 
-流水灯verilator仿真代码：
+**双控开关仿真代码：**
+
+```c++
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+#include "obj_dir/Vswitch.h"
+#include <verilated.h>
+
+int main(int argc, char** argv, char** env) {
+    Vswitch *top = new Vswitch;  //创建实例化仿真对象
+
+    while (!Verilated::gotFinish()) {
+		
+        int a = rand() & 1;
+        int b = rand() & 1;	
+        top->a = a;		
+        top->b = b;
+        top->eval(); 
+        printf("a = %d, b = %d, f = %d\n", a, b, top->f);
+        assert(top->f == a ^ b);    
+    }
+    	top -> final();
+    	delete top;
+    	exit(EXIT_SUCCESS);
+}
+
+```
+
+键入`Ctrl+Z`结束仿真
+
+<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-11 10-58-34.png" style="zoom:50%;" />
+
+**RTL ** **仿真行为** ：
+
+RTL代码是对电路的描述，对应着相应的电路；verilator是将RTL代码编译成C++的类，编译成模块的类之后，在仿真文件里面实例化模块就是新建对象，提供了仿真接口
+
+
+
+**打印波形：**
+
+参照着示例对仿真文件添加生成波形代码，然后用gtkwave查看波形为：
+
+<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-12 20-43-53.png" alt="Screenshot from 2022-04-12 20-43-53" style="zoom:50%;" />
+
+
+
+**流水灯verilator仿真代码：**
 
 ```C++
 #include<verilated>
@@ -20,8 +68,6 @@
 
 
 ### 数字电路基础实验
-
-
 
 #### Lab1 数据选择器
 
