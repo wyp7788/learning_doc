@@ -8,7 +8,7 @@
 
 ### verilator 安装结果：
 
-<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-06 22-05-44.png" alt="Screenshot from 2022-04-06 22-05-44" style="zoom:50%;" />
+<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-06 22-05-44.png" alt="Screenshot from 2022-04-06 22-05-44" style="zoom:50%;" /> 
 
 **双控开关仿真代码：**
 
@@ -42,11 +42,11 @@ int main(int argc, char** argv, char** env) {
 
 键入`Ctrl+Z`结束仿真
 
-<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-11 10-58-34.png" style="zoom:50%;" />
+<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-11 10-58-34.png" style="zoom:50%;" /> 
 
 **RTL ** **仿真行为** ：
 
-RTL代码是对电路的描述，对应着相应的电路；verilator是将RTL代码编译成C++的类，编译成模块的类之后，在仿真文件里面实例化模块就是新建对象，提供了仿真接口
+
 
 
 
@@ -54,20 +54,37 @@ RTL代码是对电路的描述，对应着相应的电路；verilator是将RTL�
 
 参照着示例对仿真文件添加生成波形代码，然后用gtkwave查看波形为：
 
-<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-12 20-43-53.png" alt="Screenshot from 2022-04-12 20-43-53" style="zoom:50%;" />
+<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-12 20-43-53.png" alt="Screenshot from 2022-04-12 20-43-53" style="zoom:50%;" /> 
 
 
 
-**流水灯verilator仿真代码：**
+**接入NVboard：**
 
-```C++
-#include<verilated>
+<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-13 17-02-17.png" alt="Screenshot from 2022-04-13 17-02-17" style="zoom:50%;" /> 
 
-```
+
+
+**nvboard 实现双控开关**:
+
+刚开始的时候想要自己写一个makefile去管理nvboard仿真，学了几个小时发现没有办法在短时间内掌握诸多makefile、shell编程的内容，因此就直接修改了示例代码中的top.v进行双控开关的控制（暂时折中的方法，先占个坑，以后慢慢补充makefile、shell编程知识，完全写出自己的makefile），结果如下：
+
+<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-15 00-27-26.png" alt="Screenshot from 2022-04-15 00-27-26" style="zoom:33%;" /><img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-15 00-27-46.png" alt="Screenshot from 2022-04-15 00-27-46" style="zoom:33%;" /><img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-15 00-27-54.png" alt="Screenshot from 2022-04-15 00-27-54" style="zoom:33%;" />
+
+用最右侧的两个拨码开关控制最右边的那个LED灯，关系为异或。
+
+**流水灯接入nvboard：**
+
+<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-15 00-46-05.png" alt="Screenshot from 2022-04-15 00-46-05" style="zoom:50%;" /> 
+
+
+
+由于流水灯是动态图，使用截图只能展示其中的一个状态；
 
 
 
 ### 数字电路基础实验
+
+
 
 #### Lab1 数据选择器
 
@@ -75,11 +92,40 @@ RTL代码是对电路的描述，对应着相应的电路；verilator是将RTL�
 
 #### Lab2 译码器和编码器
 
+
+
 #### Lab 3 加法器与ALU
+
+
 
 #### Lab 4 计数器和时钟（zynq 7020 实现）
 
 #### Lab 5 寄存器组及存储器（zynq 7020 实现）
+
+**寄存器组(RV64寄存器组)实现verilog：**
+
+```verilog
+module rv64im_regs (
+	input clk, wen, 	// write enable and clock
+	input [4:0] rw,		// write select
+	input [4:0] ra,
+	input [4:0] rb,
+	input [63:0] busw,	//64-bit data bus
+	output [63:0] busa,
+	output [63:0] busb
+);
+
+	reg [63:0] regs [31:0];
+	always @(posedge clk)
+		if(wen) regs[rw] <= busw;
+	assign busa = (ra == 5'd0) ? 64'd0 : regs[ra];
+	assign busb = (rb == 5'd0) ? 64'd0 : regs[rb];
+
+endmodule
+
+```
+
+
 
 #### Lab 6 移位寄存器及桶形移位器
 
@@ -197,7 +243,7 @@ static int cmd_si(char *args){
 
 实现效果为
 
-![Screenshot from 2022-04-06 21-16-21](/home/ypwang/learning_doc/image/Screenshot from 2022-04-06 21-16-21.png)
+![Screenshot from 2022-04-06 21-16-21](/home/ypwang/learning_doc/image/Screenshot from 2022-04-06 21-16-21.png) 
 
 
 
@@ -259,7 +305,7 @@ static int cmd_x(char *args){
 
 扫描内存结果：
 
-<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-08 23-29-28.png" alt="Screenshot from 2022-04-08 23-29-28" style="zoom:50%;" />
+<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-08 23-29-28.png" alt="Screenshot from 2022-04-08 23-29-28" style="zoom:50%;" /> 
 
 
 

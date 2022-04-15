@@ -5,14 +5,19 @@
 ## 1. Verilog  -> C++ file
 
 ```shell
-verilator -Wall --cc --exe --build sim_main.cpp our.v
+verilator -Wall --cc --exe --build sim_main.cpp our.v   
 # -Wall 打开所有警告信息
 # --cc to get C++ output
 # --exe 
 # --build 
 ```
 
+> 两步生成可执行文件：
+>
+> - `verilator -Wall --cc --exe Vmodule.cpp module.v`
+> - `make -j -C obj_dir -f Vour.mk Vour` 
 
+以上两步执行完之后就会生成可执行的仿真文件
 
 
 
