@@ -1,12 +1,12 @@
-# YSYX 预学习数字电路基础实验
+### 数字电路基础实验
 
-## 1. Lab_1 选择器
 
-### 1.1 2选1多路选择器
+
+#### Lab1 数据选择器
 
 多路选择器框图为
 
-<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-03-26 00-04-21.png" style="zoom: 50%;" />
+<img src="/home/ypwang/learning_doc/image/Screenshot from 2022-03-26 00-04-21.png" style="zoom: 50%;" /> 
 
 **真值表为：**
 
@@ -76,28 +76,52 @@ module my_not(a,b);
 
   assign b = ~a;
 endmodule
+```
 
+
+
+#### Lab2 译码器和编码器
+
+
+
+#### Lab 3 加法器与ALU
+
+
+
+#### Lab 4 计数器和时钟（zynq 7020 实现）
+
+#### Lab 5 寄存器组及存储器（zynq 7020 实现）
+
+**寄存器组(RV64寄存器组)实现verilog：**
+
+```verilog
+module rv64im_regs (
+	input clk, wen, 	// write enable and clock
+	input [4:0] rw,		// write select
+	input [4:0] ra,
+	input [4:0] rb,
+	input [63:0] busw,	//64-bit data bus
+	output [63:0] busa,
+	output [63:0] busb
+);
+
+	reg [63:0] regs [31:0];
+	always @(posedge clk)
+		if(wen) regs[rw] <= busw;
+	assign busa = (ra == 5'd0) ? 64'd0 : regs[ra];
+	assign busb = (rb == 5'd0) ? 64'd0 : regs[rb];
+
+endmodule
 
 ```
 
-### NVboard
 
-- `void nvboard_init()`: 初始化NVBoard
 
-- `void nvboard_quit()`: 退出NVBoard
+#### Lab 6 移位寄存器及桶形移位器
 
-- ```
-  void nvboard_bind_pin(void *signal, bool is_rt, bool is_output, int len, ...)
-  ```
+#### Lab 7 状态机及键盘输入
 
-  : 将HDL的信号signal连接到NVBoard里的引脚上，具体地
+#### Lab 8 VGA接口控制器实现
 
-  - `is_rt`为`true`时，表示该信号为实时信号，每个周期都要更新才能正确工作，如键盘和VGA相关信号； `is_rt`为`false`时，表示该信号为普通信号，可以在NVBoard更新画面时才更新，从而提升NVBoard的性能，如拨码开关和LED灯等，无需每个周期都更新
-  - `is_output`为`true`时，表示该信号方向为输出方向(从RTL代码到NVBoard)；否则为输入方向(从NVBoard到RTL代码)
-  - `len`为信号的长度，大于1时为向量信号
-  - 可变参数列表`...`为引脚编号列表，编号为整数；绑定向量信号时，引脚编号列表从MSB到LSB排列
-
-- `void nvboard_update()`: 更新NVBoard中各组件的状态，每当电路状态发生改变时都需要调用该函数
-
-###
+#### Lab 9 字符输入界面
 

@@ -117,6 +117,12 @@ This function returns a pointer to the first token found in the string. A null p
 
 ### 2.2 sscanf()函数
 
+### 2.3 getopt()
+
+program invocation 程序调用
+
+
+
 
 
 ## 3. Linux C编程

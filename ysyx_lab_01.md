@@ -82,61 +82,6 @@ int main(int argc, char** argv, char** env) {
 
 
 
-### 数字电路基础实验
-
-
-
-#### Lab1 数据选择器
-
-
-
-#### Lab2 译码器和编码器
-
-
-
-#### Lab 3 加法器与ALU
-
-
-
-#### Lab 4 计数器和时钟（zynq 7020 实现）
-
-#### Lab 5 寄存器组及存储器（zynq 7020 实现）
-
-**寄存器组(RV64寄存器组)实现verilog：**
-
-```verilog
-module rv64im_regs (
-	input clk, wen, 	// write enable and clock
-	input [4:0] rw,		// write select
-	input [4:0] ra,
-	input [4:0] rb,
-	input [63:0] busw,	//64-bit data bus
-	output [63:0] busa,
-	output [63:0] busb
-);
-
-	reg [63:0] regs [31:0];
-	always @(posedge clk)
-		if(wen) regs[rw] <= busw;
-	assign busa = (ra == 5'd0) ? 64'd0 : regs[ra];
-	assign busb = (rb == 5'd0) ? 64'd0 : regs[rb];
-
-endmodule
-
-```
-
-
-
-#### Lab 6 移位寄存器及桶形移位器
-
-#### Lab 7 状态机及键盘输入
-
-#### Lab 8 VGA接口控制器实现
-
-#### Lab 9 字符输入界面
-
-
-
 ## PA0 开发环境配置
 
 完成了PA0的所有内容。
