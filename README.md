@@ -1,21 +1,52 @@
-# learning_doc
+# Learning_doc preview
 
-- eecs151FPGA实验文档
-- ysyx数字电路实验部分文档
-- wiki for me!!!
-- 学习要点记录
-- 数字设计基本模块
-- ysyx doc material
+> **Do somethong right, do it better! **
+>
+> ​							--my motto
+
+> - EECS151 FPGA Lab doc material
+> - ysyx digital circuit lab doc material
+> - WIKI for me
+> - Digital Logic Design Module
+> - ysyx lab&npc material
+> - Tools: Git、Makefile、Shell 
 
 **此仓库主要是一些原理阐述和细节记录！**
 
+
+
+## 1.工具文档
+
+- Git
+- Makefile
+- shell
+
+
+
+## 2. ysyx 记录
+
+- Lab doc 
+- RISC-V datapath
+- NEMU RTFSC
+- RTL design
+
+
+
+## 3. WIKI
+
+- Do somethong right, do it better!
+
+## 4. Source Code
+
+- verilog code
+- C code
+
+
+
 ## Timeline
 
-> - 2022.04.15  ysyx PA1.1 
-> - next: ysyx PA2
-> - 
-
-
+- Mar 15, 2022
+- Apr 15, 2022
 
 
 

@@ -2,7 +2,13 @@
 
 ![verilator usage](/home/ypwang/learning_doc/image/verilator_usage_400x200-min.png)
 
-## 1. Verilog  -> C++ file
+`Verilator` is a tool that compiles `Verilog` and `SystemVerilog` sources to highly optimized (and optionally multithreaded) cycle-accurate `C++` or `SystemC` code. The converted modules can be instantiated and used in a C++ or a SystemC testbench, for verification and/or modelling purposes.
+
+**Verilator is essentially a Verilog/SystemVerilog simulator**. It’s commercial-grade, super fast, free and open source, but **it is not a direct replacement** for Modelsim, Questa Sim, Synopsys VCS, Vivado Xsim, and other event-based simulators. Verilator is a [cycle-based](https://www.asic-world.com/verilog/verifaq3.html) simulator, which means it does not evaluate time within a single clock cycle, and does not simulate exact circuit timing. Instead, the circuit state is typically evaluated once per clock-cycle, so any intra-period glitches cannot be observed, and timed signal delays are not supported. This has both benefits and drawbacks when comparing Verilator to other simulators.
+
+## Getting started
+
+### 1. Verilog  -> C++ file
 
 ```shell
 verilator -Wall --cc --exe --build sim_main.cpp our.v   
@@ -101,8 +107,6 @@ Verilator的`testbench`使用C++编写，假设前期的RTL代码为`RTL.v`基�
 ```
 
 （2）主函数
-
-
 
 `verilator -Wall --trace -cc alu.sv --exe tb_alu.cpp`
 
