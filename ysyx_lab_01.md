@@ -82,6 +82,24 @@ int main(int argc, char** argv, char** env) {
 
 
 
+### 数字电路基础实验
+
+**实验一：选择器**
+
+**实验二：编码器**
+
+**实验三：运算器**
+
+**实验六：移位寄存器和桶形移位器**
+
+**实验七：状态机**
+
+**实验八：VGA显示**
+
+**实验九：字符输入界面**
+
+
+
 ## PA0 开发环境配置
 
 完成了PA0的所有内容。
@@ -100,9 +118,9 @@ int main(int argc, char** argv, char** env) {
 
 ## PA1 开天辟地的篇章
 
+
+
 ### 计算机可以没有寄存器吗?
-
-
 
 计算机没有寄存器仍然可以工作。
 
@@ -158,7 +176,7 @@ int main(int argc, char** argv, char** env) {
 
 ### 优美的退出
 
-`cmd_q()`函数在被调用的时候，返回-1; 每次退出的时候出现error都是因为调用了excute（n）有关
+`cmd_q()`函数在被调用的时候，返回-1; 这个返回值跟cpu.state有关，更改一下状态信息就可以了。
 
 ![Screenshot from 2022-04-06 21-26-42](/home/ypwang/learning_doc/image/Screenshot from 2022-04-06 21-26-42.png)
 
