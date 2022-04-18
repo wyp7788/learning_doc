@@ -1,6 +1,8 @@
 # Gray code
 
-格雷码又称循环码，；
+一次改变一位，在数字系统中稳定性高，抗干扰；
+
+二进制码转格雷码
 
 ```VERILOG
 module binary_to_gray #(
@@ -25,7 +27,10 @@ endgenerate
 assign gray_value[PTR] = binary_value[PTR];
     
 endmodule
+
 ```
+
+格雷码转二进制码
 
 ```VERILOG
 module gray_to_binary #(

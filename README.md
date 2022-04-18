@@ -34,7 +34,7 @@
 
 ## 3. WIKI
 
-- Do somethong right, do it better!
+- Common knowledge points
 
 ## 4. Source Code
 

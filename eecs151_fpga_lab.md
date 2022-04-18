@@ -1,3 +1,5 @@
+# FPGA lab 1：熟悉硬件平台和开发环境
+
 # FPGA Lab 2: 加法器设计
 
 ## A Structural and Behavioral Adder Design
@@ -57,3 +59,10 @@ module structural_adder (
 endmodule
 ```
 
+# FPGA lab 3：
+
+# FPGA Lab 4: 
+
+# FPGA lab 5：
+
+# FPGA Lab 6:
