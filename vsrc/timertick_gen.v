@@ -31,8 +31,9 @@ wire         sec_tick_nxt;
 //******************************************
 assign us_counter_nxt = (us_counter == US_COUNTER_MAX) ? 'd0 : (us_counter + 1'b1);
 assign us_tick_nxt = (us_counter == US_COUNTER_MAX);
-//*******************************************
-// ms counter
+assign ms_tick_nxt = (ms_counter == 'd999);
+assign sec_counter_nxt = ms_tick  ? ((sec_counter == 'd999) ? 'd0 : (sec_counter + 1'b1)) : sec_counter;
+assign sec_tick_nxt = (sec_counter == 'd999);   
 always @(*) begin
     ms_counter_nxt = ms_counter;
     if(us_tick)begin
@@ -41,13 +42,6 @@ always @(*) begin
         else ms_counter_nxt = ms_counter + 1;
     end    
 end
-
-assign ms_tick_nxt = (ms_counter == 'd999);
-
-assign sec_counter_nxt = ms_tick  ? ((sec_counter == 'd999) ? 'd0 : (sec_counter + 1'b1)) : sec_counter;
-
-assign sec_tick_nxt = (sec_counter == 'd999);
-
 always @(posedge clk_200 or negedge resetb) begin
     if(!resetb)begin
         us_counter  <= 'd0;
