@@ -1,12 +1,16 @@
 # ysyx lab report
 
-2022.03.04  实验平台：Ubuntu 20.04 LTS
+**开始时间**：2022.03.04  **实验平台**：Ubuntu 20.04 LTS
 
 **note：虽然把数字电路实验排版在了前面，但其实我是先做的PA，后做的数字电路基础实验。**
 
-## Verilator&数字电路基础实验
+## 1. 实验进度
 
-### verilator 安装结果：
+
+
+## 2. Verilator & 数字电路基础实验
+
+### 2.1 verilator 安装结果：
 
 <img src="/home/ypwang/learning_doc/image/Screenshot from 2022-04-06 22-05-44.png" alt="Screenshot from 2022-04-06 22-05-44" style="zoom:50%;" /> 
 
@@ -82,7 +86,7 @@ int main(int argc, char** argv, char** env) {
 
 
 
-### 数字电路基础实验
+### 2.2 数字电路基础实验
 
 **实验一：选择器**
 
@@ -176,9 +180,30 @@ int main(int argc, char** argv, char** env) {
 
 ### 优美的退出
 
-`cmd_q()`函数在被调用的时候，返回-1; 这个返回值跟cpu.state有关，更改一下状态信息就可以了。
+NEMU `main()`返回值非0的时候会触发退出错误，`main()`函数返回值为 `is_exit_status_bad()` ，进入`is_exit_status_bad()`：
+
+```c
+int is_exit_status_bad() {
+  int good = (nemu_state.state == NEMU_END && nemu_state.halt_ret == 0) ||
+    (nemu_state.state == NEMU_QUIT);
+  return !good;  
+}
+```
+
+可见，nemu的退出状态由`nemu_state.state` 决定，因此可见，出错原因为`cmd_q()`函数调用时候未能正确调整`nemu_state.state`的值，就会出现以下错误：
 
 ![Screenshot from 2022-04-06 21-26-42](/home/ypwang/learning_doc/image/Screenshot from 2022-04-06 21-26-42.png)
+
+因此在`cmd_q()`函数调用时候，修改`nemu_state.state`的值为：
+
+```c
+static int cmd_q(char *args) {
+  nemu_state.state = NEMU_QUIT;    // wyp: finish normal quit
+  return -1;
+}
+```
+
+
 
 解决之后的效果为：
 
@@ -273,6 +298,10 @@ static int cmd_x(char *args){
 
 
 **PA1.1完成**
+
+
+
+
 
 
 

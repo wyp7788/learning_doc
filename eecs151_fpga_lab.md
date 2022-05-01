@@ -59,7 +59,21 @@ module structural_adder (
 endmodule
 ```
 
-# FPGA lab 3：
+# FPGA Lab 3: More Sequential Circuits, Audio "DAC"
+
+## verview
+
+In this lab :
+
+- Build input conditioning circuits so we can safely use the buttons as inputs to sequential circuits
+  - Write parameterized Verilog modules
+  - Use fork/join simulation threading in Verilog testbenches
+  - Test the button signal chain on the FPGA
+- Create an audio "DAC" using a PWM generator
+- Write a square wave signal generator
+  - Test the circuit on the FPGA
+
+
 
 # FPGA Lab 4: 
 
