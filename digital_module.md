@@ -6,11 +6,49 @@
 
 ### 1.1 MUX转换为与门
 
+与门的逻辑关系为: `Y = AB`
+
+| A    | B    | Y    |
+| ---- | ---- | ---- |
+| 0    | 0    | 0    |
+| 0    | 1    | 0    |
+| 1    | 0    | 0    |
+| 1    | 1    | 1    |
+
+2 输入MUX的真值表为：
+
+| Sel  | A    | B    | Y    |
+| ---- | ---- | ---- | ---- |
+| 0    | 0    | 0    | 0    |
+| 0    | 0    | 1    | 0    |
+| 0    | 1    | 0    | 1    |
+| 0    | 1    | 1    | 1    |
+| 1    | 0    | 0    | 0    |
+| 1    | 0    | 1    | 1    |
+| 1    | 1    | 0    | 0    |
+| 1    | 1    | 1    | 1    |
+
+进而可推出MUX的逻辑函数表达式为：`Y = Sel'A +SelB`
+
+比较与门与MUX逻辑表达式的异同，要想用MUX实现与门的功能，则需要把 A 接入低电平！
+
 ### 1.2 MUX转换为或门
+
+或门的逻辑关系为： `Y = A + B`
+
+比较或门与MUX逻辑关系可知，令`B = 1`，则`Y = S'A + S`，这个表达式不太容易一眼看出是否是最后的或门关系，利用卡诺图可以推导出来 `Y = S + A`（Note：S<=>Sel）
 
 ### 1.3 MUX转换为非门
 
+非门的逻辑表达式为：`Y = A'`
+
+结合MUX的逻辑表达式：则 `A=1, B=0`即可实现或门的逻辑功能。
+
 ### 1.4 MUX转换为异或门
+
+异或门的逻辑表达式为：`Y = A'B + AB'`
+
+结合MUX逻辑表达式，则令`B = A'`即可实现异或门的逻辑功能。**也即加了一个非门，非门可以用1.3MUX转换成的非门**
 
 
 
@@ -232,6 +270,60 @@ endgenerate
 
 assign gray_value[PTR] = binary_value[PTR];
     
+endmodule
+```
+
+
+
+## 6 流水线加法器 VS 并行加法器
+
+流水线加法器框图如下：
+
+![DD67ACF9@F295D212.FE1D7A62.png](/home/ypwang/learning_doc/image/DD67ACF9@F295D212.FE1D7A62.png.jpg)
+
+```Verilog
+// pipeline 64-bits adder
+
+module adder_pipelined (
+    input clk,
+    input resetb,
+    input   [63:0] A,
+    input   [63:0] B,
+    output  [64:0] FinalSum
+);
+
+reg     [32:0] Lsum_d1;
+wire    [32:0] Lsum_d1_nxt;
+wire           Carry_d1;
+
+reg     [31:0] Lsum_d2;
+reg     [31:0] Aup_d1, Bup_d1;
+reg     [32:0] Usum_d2;
+wire    [32:0] Usum_d2_nxt;
+wire    [64:0] FinalSum;
+//*****************************************
+assign Lsum_d1_nxt = A[31:0] + B[31:0];
+assign Carry_d1    = Lsum_d1[32];
+assign Usum_d2_nxt = Carry_d1 + Aup_d1 + Bup_d1;
+assign FinalSum    = {Usum_d2, Lsum_d1};
+//****************************************
+always @(posedge clk or negedge resetb) begin
+    if(!resetb) begin
+        Lsum_d1 <= 'd0;
+        Lsum_d2 <= 'd0;
+        Aup_d1  <= 'd0;
+        Bup_d1  <= 'd0;
+        Usum_d2 <= 'd0;
+    end
+    else begin
+        Lsum_d1 <= Lsum_d1_nxt;
+        Lsum_d2 <= Lsum_d1[31:0];
+        Aup_d1  <= A[63:32];
+        Bup_d1  <= B[63:32];
+        Usum_d2 <= Usum_d2_nxt;
+    end
+end
+
 endmodule
 ```
 
