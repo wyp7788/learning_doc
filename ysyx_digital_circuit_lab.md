@@ -308,13 +308,45 @@ endmodule
 
 具体实现时，可以用一个8位右移移位寄存器，从左到右的比特以 x7x6x5x4x3x2x1x0 表示。每个时钟周期右移一位， x0 被移出，最左边移入的位按照上一周期的值计算 [1](https://nju-projectn.github.io/dlco-lecture-note/exp/06.html#f1) ：
 
-x8=x4⊕x3⊕x2⊕x0
+x8=x4⊕x3⊕x2⊕x0    【**Linear Feedback Shifter Register**】
 
 例如，初始二进制值为00000001时，移位寄存器的状态将按 00000001→10000000→01000000→001000000→00010000→10001000… 变化。 该序列的周期为255。 当然，当初始值为全零时，系统将一直停留在全零状态，所以需要对全零状态进行特殊处理。
 
 请实现一个8位的周期为255的伪随机序列，以按钮为时钟信号，并请将8位二进制数以十六进制显示在数码管上，在DE10-Standard开发板上观察生成的随机数序列。
 
 生成的伪随机数序列仍然有一定的规律，如何能够生成更加复杂的伪随机数序列？
+
+```verilog
+module LSFR(
+    input CLK_125MHZ_FPGA,
+    input [3:0] BUTTONS,
+    input [1:0] SWITCHES,
+    output reg[3:0] LEDS
+
+    );
+
+    reg [31:0] count;
+    always @(posedge CLK_125MHZ_FPGA) begin
+        if (SWITCHES[0]) begin 
+            LEDS <= 4'b0001; 
+            count <= 0; 
+        end
+        else begin
+            if (count == 0) begin
+                //LEDS <= {LEDS[4:0], LEDS[5]};
+                
+                LEDS[0] <= LEDS[3] ^ LEDS[2];
+                LEDS[1] <= LEDS[0];
+                LEDS[2] <= LEDS[1];
+                LEDS[3] <= LEDS[2];
+            end
+            count   <= (count >= 50000000 ? 32'b0 : count + 1);
+        end
+  end
+endmodule
+```
+
+
 
 #### Lab 7 状态机及键盘输入
 
@@ -393,4 +425,10 @@ endmodule
 
 
 #### Lab 9 字符输入界面
+
+
+
+
+
+
 

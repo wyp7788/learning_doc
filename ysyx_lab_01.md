@@ -104,11 +104,11 @@ int main(int argc, char** argv, char** env) {
 
 **实验九：字符输入界面**
 
-
+# PA 实验
 
 ## PA0 开发环境配置
 
-完成了PA0的所有内容。
+**完成了PA0的所有内容。**
 
 编译nemu时遇到bug，查看出错信息之后发现是缺少`bison、flex`，执行安装命令之后，完成正常编译，出现welcome界面。
 
@@ -300,6 +300,8 @@ static int cmd_x(char *args){
 
 
 **PA1.1完成**
+
+**Note : **
 
 
 
